@@ -8,7 +8,7 @@ const projectSchema = new Schema({
     startDate: {type: Date},
     endDate: {type: Date},
     status: {type: String, enum: ['ongoing', 'completed'], default: 'ongoing'},
-    images: [String],
+    media: { type: String, required: true},
     category: {type: Schema.Types.ObjectId, ref: 'Category'}
 });
 
