@@ -15,9 +15,15 @@ exports.index = asyncHandler(async(req, res, next) => {
 
 //  Display all projects
 exports.project_list = asyncHandler(async(req, res, next) => {
-    const projects = await Project.find();
+    try {
+        const projects = await Project.find();
+        res.status(200).json(projects);
+        // res.render('projects',{projects:projects})
+    } catch (err) {
+        const errs = {"error": "unable to process the request"}
+        res.send("unable to access the database")
+    }
 
-    res.render('projects',{projects:projects})
 });
 
 // Display a particular project
@@ -54,7 +60,7 @@ exports.project_create_post = asyncHandler(async (req, res, next) => {
             return;
         } else {
             await project.save();
-            res.redirect(author.url);
+            res.redirect(project.url);
         }
     })
 });
