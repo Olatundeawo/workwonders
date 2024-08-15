@@ -1,10 +1,12 @@
 const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
+const bcrypt = require('bcrypt');
 
 const userSchema = new Schema({
     name: {type: String, required: true},
     email: {type: String, required: true, unique: true,
+        trim: true,
         match: [/.+@.+\..+/, 'Please fill a valid email address']
 
      },
@@ -13,6 +15,17 @@ const userSchema = new Schema({
     bio: String,
     profilePicture: String,
     projects: [{type: Schema.Types.ObjectId, ref: 'Project '}]
+});
+
+
+// Password is hashed before saving it
+userSchema.pre("save", async function(next) {
+    if (!this.isModified("password")) {
+        return (next);
+    }
+    const hash = await bcrypt.hash(this.password, 10);
+    this.password =  hash;
+    next();
 });
 
 //  Virtual for user's URL
