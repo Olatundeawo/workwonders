@@ -70,7 +70,7 @@ router.get("/projects", project_controller.project_list);
 router.get("/user/create", user_controller.user_create_get);
 
 // Post request for creating user
-router.post("/user/create", user_controller.user_create_post);
+router.post("/user/create",  user_controller.user_create_post);
 
 // Get request to delete user
 router.get("/user/:id/delete", user_controller.user_delete_get);
