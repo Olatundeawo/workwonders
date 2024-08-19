@@ -1,0 +1,58 @@
+.topBar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* margin-top: 15px; */
+}
+
+.section1 {
+    width: 100%;
+    background-color: red;
+    padding: 10px;
+}
+
+.section2 {
+    background-color: yellow;
+    margin: auto;
+    margin-top: -25px;
+    text-align: center;
+    padding-top: 22px;
+    padding-bottom: 40px;
+}
+
+.h2 {
+    text-align: center;
+}
+
+.cards,
+.btn {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.section3 {
+    padding: 0;
+    margin: 0;
+    margin-top: -33px;
+    padding-top: 30px;
+    background-color: green;
+}
+
+.h5 {
+    margin: 0;
+    padding: 0;
+    font-weight: 400;
+}
+
+.section4 {
+    padding: 40px;
+    /* display: "flex";
+    align-items: "center";
+    justify-content: "center"; */
+}
+
+.ten {
+    font-size: 30px;
+}
