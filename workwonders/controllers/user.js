@@ -3,45 +3,31 @@ const bcrypt = require('bcryptjs');
 const { userCreateValidationRules, validate } = require("../validators/userValidator");
 const asyncHandler = require('express-async-handler');
 
-// Function that update user
-async function updateUser(userId, updates) {
-    const user = await User.findById(userId);
 
-    if (!user) {
-        throw new Error ('user not found');
-
-    }
-     if (updates.email && updates.email !== user.email) {
-        const exitingUser = await User.findOne({ email: updates.email });
-        if (exitingUser) {
-            throw new Error('Email is already in use');
-        }
-     }
-
-     if (updates.password) {
-        updates.password = await bcrypt.hash(updates.password, 10);
-     }
-
-     Object.assign(user, updates);
-
-     await user.save();
-
-     return user;
-}
 
 //  Display all the users
 exports.user_list = asyncHandler(async (req, res, next) => {
+    
     try {
         const users = await User.find();
-        res.status(200).json(users)
+        res.status(200).json(users);
+        // res.render('projects',{projects:projects})
     } catch (err) {
-        res.status(500).json(err);
+        const errs = {"error": "unable to process the request"}
+        res.send("unable to access the database")
     }
 });
 
 // Display specific user
 exports.user_detail = asyncHandler(async (req, res, next) => {
-    res.send(`NOT IMPLEMENTED: User detail: ${req.params.id}`);
+    const id = req.params.id
+    const user = await User.findById(id);
+
+    if (!user) {
+        return res.json({Error: 'No User with the id', id})
+    }
+
+    res.json(user);
 });
 
 // Display user create form on GET
@@ -59,7 +45,7 @@ exports.user_create_get = asyncHandler(async (req, res, next) => {
             throw new Error ('Invalid email or password');
         }
 
-        return user;
+        res.json(user);
 
     } catch (err) {
         res.status(500).json(err);
@@ -67,10 +53,7 @@ exports.user_create_get = asyncHandler(async (req, res, next) => {
 });
 
 // Display user create form on POST
-exports.user_create_post = [
-  userCreateValidationRules(),
-  validate,
- asyncHandler(async (req, res, next) => {
+exports.user_create_post = asyncHandler(async (req, res, next) => {
     try {
         // Check if email already exists
         const existUser = await User.findOne({email: req.body.email });
@@ -101,8 +84,8 @@ exports.user_create_post = [
     } catch (err) {
         res.status(500).json(err)
     }
-})
-];
+});
+
 
 // Display user delete form on GET
 exports.user_delete_get = asyncHandler(async (req, res, next) => {
@@ -114,7 +97,7 @@ exports.user_delete_get = asyncHandler(async (req, res, next) => {
         return res.status(404).send('User not found')
     }
 
-    res.render('user_delete', { title: 'Delete User', user})
+    res.json(user)
 });
 
 // Handle user delete form on POST
@@ -140,12 +123,17 @@ exports.user_update_get = asyncHandler(async (req, res, next) => {
     if (!user) {
         return res.status(404).send('User not found');
     }
-    res.render('user_form', { title: 'Update User', user})
+    res.json(user);
 });
 
 // Handle user update form on POST
 exports.user_update_post = asyncHandler(async (req, res, next) => {
     const userId = req.params.id;
+
+    let hashPassword;
+    if (req.body.password) {
+        hashPassword = await bcrypt.hash(req.body.password, 10);
+    }
 
     const update = {
         name: req.body.name,
@@ -157,12 +145,19 @@ exports.user_update_post = asyncHandler(async (req, res, next) => {
     };
 
     if (req.body.password) {
-        update.password = req.body.password;
+        update.password = hashPassword;
     }
 
     try {
-        const updatedUser = await updateUser(userId, update);
-        res.redirect(`/users/${userId}`); 
+        const updatedUser = await User.findByIdAndUpdate(userId, update, {
+            new: true
+        });
+
+        if (!updatedUser) {
+            return res.status(404).json({ error: "User not found "})
+        }
+
+        res.json(updatedUser) 
     } catch (err) {
         next(err);
     }
