@@ -7,6 +7,9 @@ const category_controller = require("../controllers/category");
 const project_controller = require("../controllers/project");
 const user_controller = require("../controllers/user");
 const validateProject = require("../validators/projectValidator");
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 /// CATERGORY ROUTES ///
 
@@ -43,7 +46,7 @@ router.get("/", project_controller.index)
 router.get("/project/create", project_controller.project_create_get);
 
 // Post request for creating project
-router.post("/project/create", validateProject, project_controller.project_create_post);
+router.post("/project/create", upload.array('media'), validateProject, project_controller.project_create_post);
 
 // Get request to delete project
 router.get("/project/:id/delete", project_controller.project_delete_get);

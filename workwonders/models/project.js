@@ -8,7 +8,8 @@ const projectSchema = new Schema({
     startDate: {type: Date},
     endDate: {type: Date},
     status: {type: String, enum: ['ongoing', 'completed'], default: 'ongoing'},
-    category: {type: Schema.Types.ObjectId, ref: 'Category'}
+    category: {type: Schema.Types.ObjectId, ref: 'Category'},
+    media: [{type: Schema.Types.ObjectId, ref: 'Media'}]
 });
 
 module.exports = mongoose.model('Project', projectSchema);
