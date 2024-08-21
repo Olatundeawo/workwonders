@@ -14,7 +14,6 @@ const userSchema = new Schema({
     role: {type: String, required: true },
     bio: String,
     profilePicture: String,
-    projects: [{type: Schema.Types.ObjectId, ref: 'Project '}]
 });
 
 
