@@ -136,7 +136,7 @@ exports.user_update_post = asyncHandler(async (req, res, next) => {
     }
 
     const update = {
-        name: req.body.name,
+            name: req.body.name,
             email: req.body.email,
             password: hashPassword,
             role: req.body.role,

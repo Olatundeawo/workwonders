@@ -5,10 +5,8 @@ const Schema = mongoose.Schema;
 const projectSchema = new Schema({
     title: {type: String, required: true},
     description: {type: String, required: true},
-    startDate: {type: Date},
-    endDate: {type: Date},
-    status: {type: String, enum: ['ongoing', 'completed'], default: 'ongoing'},
-    category: {type: Schema.Types.ObjectId, ref: 'Category'},
+    powerSource: {type: String, required: true},
+    category: {type: String, required: true},
     media: [{type: Schema.Types.ObjectId, ref: 'Media'}]
 });
 

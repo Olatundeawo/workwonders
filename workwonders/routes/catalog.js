@@ -1,9 +1,5 @@
 const express = require("express");
 const router = express.Router();
-// const validateProject = require("../validators/projectValidator");
-
-// Require controller modules.
-const category_controller = require("../controllers/category");
 const project_controller = require("../controllers/project");
 const user_controller = require("../controllers/user");
 const validateProject = require("../validators/projectValidator");
@@ -11,36 +7,8 @@ const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-/// CATERGORY ROUTES ///
-
-// Get request for creating a category
-router.get("/category/create", category_controller.category_create_get);
-
-// POST request for creating a category
-router.post("/category/create", category_controller.category_create_post);
-
-// Get request to delete category
-router.get("/category/:id/delete", category_controller.category_delete_get);
-
-// Post request to delete category
-router.post("/category/:id/delete", category_controller.category_delete_post);
-
-// Get request to update category
-router.get("/category/:id/update", category_controller.category_update_get);
-
-// Post request to update category
-router.post("/category/:id/update", category_controller.category_update_post);
-
-// Get request for one category
-router.get("/category/:id", category_controller.category_detail);
-
-// Get request for all category
-router.get("/categories", category_controller.category_list);
 
 /// PROJECT ROUTE ///
-
-// Get request for the home page
-router.get("/", project_controller.index)
 
 // Get request for creating project
 router.get("/project/create", project_controller.project_create_get);
@@ -69,28 +37,44 @@ router.get("/projects", project_controller.project_list);
 
 /// USER ROUTE ///
 
+// IPs allowed to access the sign up and login page 
+const allowedIPs = [];
+
+//  Function that allowed certain IPs
+const ipFilter = (req, res, next) => {
+    const clientIP = req.ip || req.connection.remoteAddress;
+
+    if (allowedIPs.includes(clientIP)) {
+        next();
+    } else {
+        res.status(403).json({
+            success: false,
+            message: "Access denied"
+        })
+    }
+}
 // Get request for creating user
-router.get("/user/create", user_controller.user_create_get);
+router.get("/user/create", ipFilter, user_controller.user_create_get);
 
 // Post request for creating user
-router.post("/user/create",  user_controller.user_create_post);
+router.post("/user/create", ipFilter, user_controller.user_create_post);
 
 // Get request to delete user
-router.get("/user/:id/delete", user_controller.user_delete_get);
+router.get("/user/:id/delete",ipFilter, user_controller.user_delete_get);
 
 // Post request to delete user
-router.post("/user/:id/delete", user_controller.user_delete_post);
+router.post("/user/:id/delete", ipFilter, user_controller.user_delete_post);
 
 // Get request to update user
-router.get("/user/:id/update", user_controller.user_update_get);
+router.get("/user/:id/update", ipFilter, user_controller.user_update_get);
 
 // Post request to update user
-router.post("/user/:id/update", user_controller.user_update_post);
+router.post("/user/:id/update", ipFilter, user_controller.user_update_post);
 
 // Get request for one user
-router.get("/user/:id", user_controller.user_detail);
+router.get("/user/:id", ipFilter, user_controller.user_detail);
 
 // Get request for all users
-router.get("/users", user_controller.user_list);
+router.get("/users", ipFilter, user_controller.user_list);
 
 module.exports = router;
