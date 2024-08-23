@@ -1,6 +1,5 @@
 const User = require("../models/user");
 const bcrypt = require('bcryptjs');
-const { userCreateValidationRules, validate } = require("../validators/userValidator");
 const asyncHandler = require('express-async-handler');
 
 
@@ -11,10 +10,12 @@ exports.user_list = asyncHandler(async (req, res, next) => {
     try {
         const users = await User.find();
         res.status(200).json(users);
-        // res.render('projects',{projects:projects})
     } catch (err) {
-        const errs = {"error": "unable to process the request"}
-        res.send("unable to access the database")
+        if (err.name === 'validationError') {
+            res.json(err);
+        } else {
+            res.send("unable to access the database")
+        }
     }
 });
 
@@ -48,7 +49,10 @@ exports.user_create_get = asyncHandler(async (req, res, next) => {
         res.json(user);
 
     } catch (err) {
-        res.status(500).json(err);
+        if (err.name === 'validationError') {
+            res.status(400).json({Error: err.message})
+        }
+        res.status(500).json({Error: 'Internal server error occured'});
     }
 });
 
@@ -82,7 +86,10 @@ exports.user_create_post = asyncHandler(async (req, res, next) => {
         // return user;
         res.status(201). json({ message: "user created successfully ", user })
     } catch (err) {
-        res.status(500).json(err)
+        if (err.name === 'validationError') {
+            res.status(400).json({Error: err.message });
+        }
+        res.status(500).json({Error: 'An internal server error occured' })
     }
 });
 
@@ -104,14 +111,18 @@ exports.user_delete_get = asyncHandler(async (req, res, next) => {
 exports.user_delete_post = asyncHandler(async (req, res, next) => {
     const userId = req.params.id;
     const user = await User.findByIdAndDelete(userId);
+    try {
 
-    if (!user) {
-        return res.status(404).send('User not found');
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+        await user.save();
+    } catch(err) {
+        if (err.name === 'validationError') {
+            res.status(400).json({ error: err.message });
+        }
+        res.status(500).json({ error: 'An internal server error occured '})
     }
-    await user.save();
-
-
-
 });
 
 

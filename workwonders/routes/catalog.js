@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const project_controller = require("../controllers/project");
 const user_controller = require("../controllers/user");
-const validateProject = require("../validators/projectValidator");
 const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
@@ -14,7 +13,7 @@ const upload = multer({ storage: storage });
 router.get("/project/create", project_controller.project_create_get);
 
 // Post request for creating project
-router.post("/project/create", upload.array('media'), validateProject, project_controller.project_create_post);
+router.post("/project/create", upload.array('media'),  project_controller.project_create_post);
 
 // Get request to delete project
 router.get("/project/:id/delete", project_controller.project_delete_get);
@@ -38,7 +37,7 @@ router.get("/projects", project_controller.project_list);
 /// USER ROUTE ///
 
 // IPs allowed to access the sign up and login page 
-const allowedIPs = [];
+const allowedIPs = ["192.168.43.5"];
 
 //  Function that allowed certain IPs
 const ipFilter = (req, res, next) => {

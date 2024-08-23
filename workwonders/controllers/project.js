@@ -1,10 +1,6 @@
 const Project = require("../models/project");
 const Media = require("../models/media");
-const validateProject = require("../validators/projectValidator");
 const asyncHandler = require("express-async-handler");
-const validator = require("express-validator");
-const body = validator.body;
-const validationResult = validator.validationResult;
 const bucket = require('../firebase');
 
 
@@ -18,7 +14,10 @@ exports.project_list = asyncHandler(async(req, res, next) => {
 
         res.status(200).json(projects);
     } catch (err) {
-        res.json({"Error": "unable to access the database"})
+        if (err.name === 'validationError') {
+            res.status(400).json({ Error: err.message })
+        }
+        res.status(500).json({"Error": "Internal server error occured" });
     }
 
 });
@@ -37,6 +36,9 @@ exports.project_detail = asyncHandler(async (req, res, next) => {
 
         res.json(project)
     } catch(err) {
+        if (err.name === 'validationError' ) {
+            res.status(400).json({Error: err.message})
+        }
         res.json(`{Error:  ${projectDetail} is not a valid product Id}`)
     }
 
@@ -53,57 +55,65 @@ exports.project_create_get = asyncHandler(async (req, res, next) => {
 exports.project_create_post = asyncHandler(async (req, res, next) => {
     // Extract validation errors from the request
     const errors = validationResult(req);
+    try {
 
-    // Create a new project instance
-    const project = new Project({
-        title: req.body.title,
-        description: req.body.description,
-        powerSource: req.body.powerSource,
-        category: req.body.category
-    });
-
-    if (req.files && req.files.length > 0) {
-        const mediaIds = [];
-
-        for (const file of req.files) {
-            const blob = bucket.file(Date.now().toString() + '-' + file.originalname);
-            const blobStream = blob.createWriteStream({
-                metadata: {
-                    contenType: file.mimetype,
-                },
-            });
-
-            blobStream.on('finish', async () => {
-                const publicUrl = `https://firebasestorage.googleapis.com/v0/b/workwonders-f537b.appspot.com/o/${encodeURIComponent(blob.name)}?alt=media`;
-
-                const media = new Media ({
-                    type: file.mimetype.startsWith('image/') ? 'image' : 'video',
-                    url: publicUrl,
-                    project:project._id
-                });
-
-                await media.save();
-                mediaIds.push(media._id);
-            });
-
-            blobStream.end(file.buffer);
-        }
-
-        project.media = mediaIds;
-    }
-
-    if (!errors.isEmpty()) {
-        // If there are validation errors, re-render the form with error messages and input data
-        res.json({
-
-            errors: errors.array() // Pass the validation errors to the view
-        })
+        // Create a new project instance
+        const project = new Project({
+            title: req.body.title,
+            description: req.body.description,
     
-    } else {
-        // Save the project if no errors
-        await project.save();
-        // Redirect to the newly created project's URL
-        res.status(201).json({message: "Project created successfully", project})
+            powerSource: req.body.powerSource,
+            category: req.body.category
+        });
+    
+        if (req.files && req.files.length > 0) {
+            const mediaIds = [];
+    
+            for (const file of req.files) {
+                const blob = bucket.file(Date.now().toString() + '-' + file.originalname);
+                const blobStream = blob.createWriteStream({
+                    metadata: {
+                        contenType: file.mimetype,
+                    },
+                });
+    
+                blobStream.on('finish', async () => {
+                    const publicUrl = `https://firebasestorage.googleapis.com/v0/b/workwonders-f537b.appspot.com/o/${encodeURIComponent(blob.name)}?alt=media`;
+    
+                    const media = new Media ({
+                        type: file.mimetype.startsWith('image/') ? 'image' : 'video',
+                        url: publicUrl,
+                        project:project._id
+                    });
+    
+                    await media.save();
+                    mediaIds.push(media._id);
+                });
+    
+                blobStream.end(file.buffer);
+            }
+    
+            project.media = mediaIds;
+        }
+    
+        if (!errors.isEmpty()) {
+            // If there are validation errors, re-render the form with error messages and input data
+            res.json({
+    
+                errors: errors.array() // Pass the validation errors to the view
+            })
+        
+        } else {
+            // Save the project if no errors
+            await project.save();
+            // Redirect to the newly created project's URL
+            res.status(201).json({message: "Project created successfully", project})
+        }
+    } catch(err) {
+        if(err.name === 'validationError') {
+            res.status(400).json({Error: err.message})
+        }
+        res.status(500).json({Error: 'An internal server error occured'})
     }
 });
 
@@ -227,7 +237,10 @@ exports.project_update_post = asyncHandler(async (req, res, next) => {
             res.json(updatedProject);
         }
     } catch (err) {
-        res.json(err)
+        if (err.name === 'validationError') {
+            res.status(400).json({Error: err.message})
+        }
+        res.status(500).json({Error: "An internal server error occur"})
     }
 });
 
