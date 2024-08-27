@@ -11,7 +11,7 @@ mongoose.set('strictQuery', false);
 
 main().catch((err) => console.log(err));
 async function main() {
-  await mongoose.connect(`${process.env.MONGODB_URL}`);
+  await mongoose.connect(`mongodb+srv://olatundeawo:trui6c3KoCnnXvZA@cluster0.gjbee0g.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`);
 }
 
 var indexRouter = require('./routes/index');
@@ -35,12 +35,12 @@ app.use('/users', usersRouter);
 app.use('/catalog', catalogRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
