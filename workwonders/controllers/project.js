@@ -54,9 +54,9 @@ exports.project_create_get = asyncHandler(async (req, res, next) => {
 // Handle project create on POST
 exports.project_create_post = asyncHandler(async (req, res, next) => {
     // Extract validation errors from the request
-    const errors = validationResult(req);
+    
     try {
-
+        
         // Create a new project instance
         const project = new Project({
             title: req.body.title,
@@ -96,19 +96,12 @@ exports.project_create_post = asyncHandler(async (req, res, next) => {
             project.media = mediaIds;
         }
     
-        if (!errors.isEmpty()) {
-            // If there are validation errors, re-render the form with error messages and input data
-            res.json({
-    
-                errors: errors.array() // Pass the validation errors to the view
-            })
         
-        } else {
             // Save the project if no errors
             await project.save();
             // Redirect to the newly created project's URL
             res.status(201).json({message: "Project created successfully", project})
-        }
+        
     } catch(err) {
         if(err.name === 'validationError') {
             res.status(400).json({Error: err.message})
