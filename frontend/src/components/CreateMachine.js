@@ -99,7 +99,7 @@ export default function CreateMachine() {
                     Upload Images
                     <Input
                         id="images"
-                        name="images"
+                        name="image"
                         type="file"
                         style={{ display: 'none' }}
                         accept='.jpg, .jpeg, .png'
@@ -135,7 +135,7 @@ export default function CreateMachine() {
                     Upload Video
                     <Input
                         id="videos"
-                        name="videos"
+                        name="video"
                         type="file"
                         style={{ display: 'none' }}
                         multiple
