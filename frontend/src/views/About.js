@@ -15,7 +15,11 @@ export default function About() {
     const lists = [{ first: "Drillers kuygyuofuky", second: "Drillers kuygyuofukyDrillers kuygyuofuky" }, { first: "Drillers kuygyuofuky", second: "Drillers kuygyuofukyDrillers kuygyuofuky" }, { first: "Drillers kuygyuofuky", second: "Drillers kuygyuofukyDrillers kuygyuofuky" }, { first: "Drillers kuygyuofuky", second: "Drillers kuygyuofukyDrillers kuygyuofuky" }]
 
     return (
-        <div className="overAll">
+        <div className="overAll" style={{
+            width: '100vw',
+            maxWidth: '100vw',
+            height: '100vh'
+        }}>
             <div className="section1">
                 <div className="topBar">
                     <Typography variant="h1" sx={{ fontSize: "1.5em", fontWeight: "700" }}>
@@ -134,9 +138,10 @@ export default function About() {
                             justifyContent: "space-around"
                         }}>
                         {lists.map((list, index) => (
-                            <ListItem sx={{
-                                width: "130px",
-                            }}>
+                            <ListItem key={index}
+                                sx={{
+                                    width: "130px",
+                                }}>
                                 <ListItemIcon sx={{
                                     position: "absolute",
                                     top: "10px",

@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import fetchMachine from '../api/FetchMachine';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -8,6 +8,8 @@ import { List, IconButton, ListItem, ListItemButton, ListItemIcon, Button, Box, 
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import UpdateIcon from '@mui/icons-material/Update';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import ImageSwiper from "../components/ImageSwiper"
+import DeleteMachine from "../api/DeleteMachine"
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -18,10 +20,14 @@ import Data from '../db/data.json'
 import { Navigation, Pagination, Mousewheel, Keyboard } from 'swiper/modules';
 
 export default function Machine() {
-    const { id } = useParams();
+    const location = useLocation();
+
+    const { data } = location.state;
+    console.log('nwigiri machine', data)
     const [machineData, setMachineData] = useState(null);
     const [visible, setVisible] = useState(false);
     const [action, setAction] = useState(<MoreVertIcon />);
+    const images = ['./images/logo.jpg', './images/logo.jpg', './images/logo.jpg']
 
     const toggle = () => {
         setVisible(prevVisible => {
@@ -31,19 +37,19 @@ export default function Machine() {
         });
     };
 
-    useLayoutEffect(() => {
-        const fetchData = async () => {
-            try {
-                const data = await fetchMachine(id);
-                setMachineData(data);
-                console.log('Machine data fetched:', data);
-            } catch (error) {
-                console.error('Error fetching machine data:', error);
-            }
-        };
+    // useLayoutEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             const data = await fetchMachine(id);
+    //             setMachineData(data);
+    //             console.log('Machine data fetched:', data);
+    //         } catch (error) {
+    //             console.error('Error fetching machine data:', error);
+    //         }
+    //     };
 
-        fetchData();
-    }, [id]);
+    //     fetchData();
+    // }, [id]);
 
     const actions = [
         { action: 'Update', icon: <UpdateIcon /> },
@@ -65,7 +71,7 @@ export default function Machine() {
                         <List sx={{ position: 'absolute', bgcolor: "red", borderRadius: '10px', marginTop: '45px', zIndex: '30' }}>
                             {actions.map((item, index) => (
                                 <ListItem key={index} sx={{ marginTop: "-10px" }}>
-                                    <ListItemButton>
+                                    <ListItemButton onClick={() => index === 1 ? DeleteMachine(data._id) : null}>
                                         <ListItemIcon>
                                             {item.icon}
                                         </ListItemIcon>
@@ -80,15 +86,17 @@ export default function Machine() {
 
             <div style={{
                 textAlign: "center",
-                marginTop: "20px"
+                marginTop: "20px",
             }}>
                 <Typography variant='h5'>
-                    Title
+                    {data.title}
                 </Typography>
+
+                <ImageSwiper imageList={images} />
                 <Swiper
                     cssMode={true}
                     navigation={true}
-                    pagination={true}
+                    pagination={false}
                     mousewheel={true}
                     keyboard={true}
                     modules={[Navigation, Pagination, Mousewheel, Keyboard]}
@@ -103,7 +111,22 @@ export default function Machine() {
                                 border: '1px solid black',
                                 margin: '10px',
                             }}
-                            alt={`uploaded video `}
+                            alt={`uploaded video(s)`}
+                            src={'/videos/video.mp4'}
+                            // src={'../../public/videos/video.mp4'}
+                            controls
+                        />
+                    </SwiperSlide>
+                    <SwiperSlide>
+                        <Box component='video'
+                            sx={{
+                                width: '300px',
+                                height: '200px',
+                                borderRadius: '10px',
+                                border: '1px solid black',
+                                margin: '10px',
+                            }}
+                            alt={`uploaded video(s)`}
                             src={'/videos/video.mp4'}
                             // src={'../../public/videos/video.mp4'}
                             controls
@@ -111,17 +134,24 @@ export default function Machine() {
                     </SwiperSlide>
                 </Swiper>
                 <Box sx={{
-                    textAlign: 'left',
                     marginTop: "20px",
+                    display: 'flex',
+                    justifyContent: "center",
+                    alignItems: 'center',
+                    maxWidth: '100%', // Ensures the box takes the full width available
+                    overflowWrap: 'break-word', // Ensures long words break and wrap to the next line
                 }}>
-                    <Typography variant='p'>
-                        public Folder: Files placed in the public folder can be accessed via the root URL. Therefore, a file located at public/videos/video.mp4 would be accessed with /videos/video.mp4.
-                        src Folder: Files in the src folder need to be imported since they are bundled with the application during the build process.
-                        By following the appropriate method based on where the file is located, you should be able to get the video to display correctly.
+                    <Typography variant='body1'
+                        sx={{
+                            wordWrap: 'break-word', // Ensures long words wrap within the container
+                            maxWidth: '100%', // Prevents overflow
+                        }}>
+                        {data.description}
                     </Typography>
                 </Box>
+
             </div>
-        </div>
+        </div >
     );
 }
 

@@ -7,6 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('workwonders:server');
 var http = require('http');
+const cors = require('cors')
 
 /**
  * Get port from environment and store in Express.
@@ -14,6 +15,13 @@ var http = require('http');
 
 var port = normalizePort('5000');
 app.set('port', port);
+
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  methods: 'GET,POST'
+};
+
+app.use(cors(corsOptions));
 
 /**
  * Create HTTP server.

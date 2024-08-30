@@ -14,7 +14,7 @@ import '../assets/css/Contact.css';
 // import required modules
 import { Navigation, Pagination, Mousewheel, Keyboard } from 'swiper/modules';
 
-export default function Contact() {
+export default function ImageSwiper({ imageList }) {
     const [overlay, setOverlayImg] = useState("");
     const [zoom, setZoom] = useState(false);
 
@@ -68,34 +68,32 @@ export default function Contact() {
                 <Swiper
                     cssMode={true}
                     navigation={true}
-                    pagination={true}
+                    pagination={false}
                     mousewheel={true}
                     keyboard={true}
                     modules={[Navigation, Pagination, Mousewheel, Keyboard]}
                     className="mySwiper"
                 >
-                    <SwiperSlide className="custom-slide"
-                        sx={{
-                            width: '300px',
-                            height: '100%',
-                            minWidth: '100px',
-                        }}>
-                        <Box component='img'
-                            onClick={zoomOut}
-                            src={'./images/logo.jpg'}
-                        />
-                    </SwiperSlide>
-                    <SwiperSlide className="custom-slide"
-                        sx={{
-                            width: '300px',
-                            height: '100%',
-                            minWidth: '100px',
-                        }}>
-                        <Box component='img'
-                            onClick={zoomOut}
-                            src={'./images/logo.jpg'}
-                        />
-                    </SwiperSlide>
+                    {imageList && imageList.map((element, index) => (
+                        <SwiperSlide key={element._id || index} className="custom-slide"
+                        >
+                            <Box component='img'
+                                sx={{
+                                    width: '200px',
+                                    height: '200px',
+                                    minWidth: '100px',
+                                    padding: '25px 40px',
+                                    border: '1px solid black',
+                                    borderRadius: '5px',
+                                    margin: "20px auto",
+                                }}
+                                onClick={zoomOut}
+                                src={element}
+                            />
+
+                        </SwiperSlide>
+                    ))
+                    }
                 </Swiper>
             </div>
         </>

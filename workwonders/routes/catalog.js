@@ -37,7 +37,7 @@ router.get("/projects", project_controller.project_list);
 /// USER ROUTE ///
 
 // IPs allowed to access the sign up and login page 
-const allowedIPs = ["192.168.43.5"];
+// const allowedIPs = ["192.168.43.5"];
 
 //  Function that allowed certain IPs
 const ipFilter = (req, res, next) => {
@@ -76,5 +76,6 @@ router.get("/user/:id", ipFilter, user_controller.user_detail);
 
 // Get request for all users
 router.get("/users", ipFilter, user_controller.user_list);
+
 
 module.exports = router;

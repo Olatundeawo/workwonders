@@ -38,9 +38,13 @@ export default function CreateMachine() {
         setVideoURLs(fileArray);
     }
 
+    function createProjects(e) {
+        createProject(e)
+    }
+
     return (
         <div id="createMachine">
-            <form className="form-container" onSubmit={createProject}>
+            <form className="form-container" onSubmit={createProjects}>
                 <FormControl className="form-control">
                     <InputLabel htmlFor="name">Name</InputLabel>
                     <Input
@@ -99,7 +103,7 @@ export default function CreateMachine() {
                     Upload Images
                     <Input
                         id="images"
-                        name="image"
+                        name="media"
                         type="file"
                         style={{ display: 'none' }}
                         accept='.jpg, .jpeg, .png'
@@ -135,7 +139,7 @@ export default function CreateMachine() {
                     Upload Video
                     <Input
                         id="videos"
-                        name="video"
+                        name="media"
                         type="file"
                         style={{ display: 'none' }}
                         multiple

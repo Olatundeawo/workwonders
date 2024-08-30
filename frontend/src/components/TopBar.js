@@ -14,7 +14,7 @@ export default function TopBar() {
                 fontSize: "2em",
                 fontWeight: "500",
                 textAlign: "center",
-                marginTop: "30px",
+                // marginTop: "30px",
                 marginBottom: "30px"
             }}>
                 Easy Tech Fabrication

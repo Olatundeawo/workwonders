@@ -11,7 +11,14 @@ mongoose.set('strictQuery', false);
 
 main().catch((err) => console.log(err));
 async function main() {
-  await mongoose.connect(`mongodb+srv://olatundeawo:trui6c3KoCnnXvZA@cluster0.gjbee0g.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`);
+  await mongoose.connect(``, {
+    serverSelectionTimeoutMS: 50000,
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
+
+    .then(() => console.log('MongoDB connected successfully'))
+    .catch(err => console.error('MongoDB connection error:', err));
 }
 
 var indexRouter = require('./routes/index');

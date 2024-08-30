@@ -7,6 +7,7 @@ import Contact from './views/Contact'
 import About from './views/About'
 import Admin from './views/Admin'
 import Machine from './views/Machine'
+import PasswordVerification from "./views/Test";
 
 const router = createBrowserRouter([
   {
@@ -24,8 +25,13 @@ const router = createBrowserRouter([
     element: < Admin />
   },
   {
-    path: "machine/:id",
+    path: "project",
     element: < Machine />
+  }
+  ,
+  {
+    path: "test",
+    element: <PasswordVerification />
   }
 ]);
 
