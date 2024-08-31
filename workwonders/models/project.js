@@ -15,7 +15,7 @@ const projectSchema = new Schema({
         required: [true, "Power source is required"]
     },
     category: {type: String, required: true},
-    media: [{type: Schema.Types.ObjectId, ref: 'Media'}]
+    media: [{type: Schema.Types.ObjectId, ref: 'Video'}]
 });
 
 module.exports = mongoose.model('Project', projectSchema);
