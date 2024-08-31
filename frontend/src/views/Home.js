@@ -118,7 +118,7 @@ export default function Home() {
 
                                     src={item.media.length > 0
                                         ? String(item.media[5].url)
-                                        : './images/logo.jpg'}
+                                        : './images/missing.png'}
 
                                     alt={`machine image`}
                                     loading="lazy"
