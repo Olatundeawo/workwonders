@@ -140,25 +140,33 @@ exports.project_delete_post = asyncHandler(async (req, res, next) => {
     const project = await Project.findById(projectId).populate('media');
 
     if (!project) {
-        return res.status(404).json({error: 'Project not found '});
+        return res.status(404).json({ error: 'Project not found' });
     }
 
-    // Delete media from Firebase Storage and mongodb
-    for (const media of project.media) {
-        const fileName = media.url.split('/').pop().split('?')[0];
-        const file = bucket.file(fileName);
+    try {
+        // Delete media from Firebase Storage and MongoDB
+        for (const media of project.media) {
+            if (typeof media.url === 'string') {
+                const filePath = decodeURIComponent(media.url.split('/o/')[1].split('?')[0]);
+                const file = bucket.file(filePath);
 
-        await file.delete().catch(err => {
-            console.error(`Failed to delete file: ${media.url}`, err);
-        });
+                await file.delete().catch(err => {
+                    console.error(`Failed to delete file: ${media.url}`, err);
+                    throw new Error('Failed to delete file from Firebase Storage');
+                });
 
-        await Media.findByIdAndDelete(media._id);
+                await Media.findByIdAndDelete(media._id);
+            } else {
+                console.error(`Invalid media URL: ${media.url}`);
+            }
+        }
+
+        // Delete the project itself
+        await Project.findByIdAndDelete(projectId);
+        res.json({ message: 'Project successfully deleted', project });
+    } catch (err) {
+        next(err);  // Let asyncHandler handle any errors
     }
-
-    // Delete the  project itself
-
-    await Project.findByIdAndDelete(projectId);
-    res.json({message: 'Project successfully deleted', project })
 });
 
 
