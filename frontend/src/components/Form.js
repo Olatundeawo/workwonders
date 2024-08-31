@@ -25,13 +25,14 @@ function Form({ type, toggleForm }) {
                 top: "50%",
                 left: "50%",
                 transform: "translate(-50%, -50%)",
-                backgroundColor: "white",
+                backgroundColor: "rgb(208, 211, 212)",
                 textAlign: "center",
                 padding: "30px 25px",
                 borderRadius: "20px",
                 width: "250px",
                 maxWidth: "300px",
-                minWidth: "100px"
+                minWidth: "100px",
+                zIndex: '30'
             }}
         >
             <div className='top'>

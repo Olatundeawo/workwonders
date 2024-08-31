@@ -27,7 +27,15 @@ export default function Machine() {
     const [machineData, setMachineData] = useState(null);
     const [visible, setVisible] = useState(false);
     const [action, setAction] = useState(<MoreVertIcon />);
-    const images = ['./images/logo.jpg', './images/logo.jpg', './images/logo.jpg']
+    const images = ['./images/logo1.jpeg', './images/logo3.jpeg', './images/logo4.jpeg', './images/logo5.jpeg',
+        './images/logo6.jpeg', './images/logo7.jpeg'
+    ]
+
+    const isVideoUrl = (url) => {
+        return /\.(mp4|mkv|webm|avi|mov|wmv|flv)$/i.test(url.split('?')[0]);
+    };
+
+    const imageUrl = data.media.filter(video => isVideoUrl(String(video.url)) ? video : null);
 
     const toggle = () => {
         setVisible(prevVisible => {
@@ -36,20 +44,6 @@ export default function Machine() {
             return newVisible;
         });
     };
-
-    // useLayoutEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             const data = await fetchMachine(id);
-    //             setMachineData(data);
-    //             console.log('Machine data fetched:', data);
-    //         } catch (error) {
-    //             console.error('Error fetching machine data:', error);
-    //         }
-    //     };
-
-    //     fetchData();
-    // }, [id]);
 
     const actions = [
         { action: 'Update', icon: <UpdateIcon /> },
@@ -68,11 +62,12 @@ export default function Machine() {
                     </IconButton>
 
                     {visible && (
-                        <List sx={{ position: 'absolute', bgcolor: "red", borderRadius: '10px', marginTop: '45px', zIndex: '30' }}>
+                        <List sx={{ position: 'absolute', bgcolor: "#8F9B9E", borderRadius: '10px', marginTop: '45px', zIndex: '30' }}>
                             {actions.map((item, index) => (
                                 <ListItem key={index} sx={{ marginTop: "-10px" }}>
-                                    <ListItemButton onClick={() => index === 1 ? DeleteMachine(data._id) : null}>
-                                        <ListItemIcon>
+                                    <ListItemButton onClick={() => index === 1 ? DeleteMachine(data._id) : null}
+                                        sx={{ color: index === 1 ? 'red' : 'black' }}>
+                                        <ListItemIcon sx={{ color: index === 1 ? 'red' : 'black' }}>
                                             {item.icon}
                                         </ListItemIcon>
                                         {item.action}
@@ -92,47 +87,6 @@ export default function Machine() {
                     {data.title}
                 </Typography>
 
-                <ImageSwiper imageList={images} />
-                <Swiper
-                    cssMode={true}
-                    navigation={true}
-                    pagination={false}
-                    mousewheel={true}
-                    keyboard={true}
-                    modules={[Navigation, Pagination, Mousewheel, Keyboard]}
-                    className="mySwiper"
-                >
-                    <SwiperSlide>
-                        <Box component='video'
-                            sx={{
-                                width: '300px',
-                                height: '200px',
-                                borderRadius: '10px',
-                                border: '1px solid black',
-                                margin: '10px',
-                            }}
-                            alt={`uploaded video(s)`}
-                            src={'/videos/video.mp4'}
-                            // src={'../../public/videos/video.mp4'}
-                            controls
-                        />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <Box component='video'
-                            sx={{
-                                width: '300px',
-                                height: '200px',
-                                borderRadius: '10px',
-                                border: '1px solid black',
-                                margin: '10px',
-                            }}
-                            alt={`uploaded video(s)`}
-                            src={'/videos/video.mp4'}
-                            // src={'../../public/videos/video.mp4'}
-                            controls
-                        />
-                    </SwiperSlide>
-                </Swiper>
                 <Box sx={{
                     marginTop: "20px",
                     display: 'flex',
@@ -150,6 +104,31 @@ export default function Machine() {
                     </Typography>
                 </Box>
 
+                <ImageSwiper imageList={data.media} />
+                < Swiper
+                    spaceBetween={30}
+                    navigation={true}
+                    modules={[Navigation, Pagination, Mousewheel, Keyboard]}
+                    className="mySwiper"
+                >{imageUrl.length > 0 && imageUrl.map((item, index) => (
+                    <SwiperSlide>
+                        <Box component='video'
+                            sx={{
+                                width: '300px',
+                                height: '200px',
+                                borderRadius: '10px',
+                                border: '1px solid black',
+                                margin: '10px',
+                                marginBottom: '30px'
+                            }}
+                            alt={`uploaded video(s)`}
+                            src={String(item.url)}
+                            // src={'../../public/videos/video.mp4'}
+                            controls
+                        />
+                    </SwiperSlide>
+                ))}
+                </Swiper>
             </div>
         </div >
     );

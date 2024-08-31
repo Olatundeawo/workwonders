@@ -6,13 +6,14 @@ import CloseIcon from '@mui/icons-material/Close';
 
 // Import Swiper styles
 import 'swiper/css';
+import 'swiper/css/effect-fade';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
 import '../assets/css/Contact.css';
 
 // import required modules
-import { Navigation, Pagination, Mousewheel, Keyboard } from 'swiper/modules';
+import { Navigation, EffectFade, Pagination, Mousewheel, Keyboard } from 'swiper/modules';
 
 export default function ImageSwiper({ imageList }) {
     const [overlay, setOverlayImg] = useState("");
@@ -29,6 +30,12 @@ export default function ImageSwiper({ imageList }) {
         setOverlayImg("");
     }
 
+    const isImageUrl = (url) => {
+        return /\.(jpg|jpeg|png|gif|bmp|webp|svg)$/i.test(url.split('?')[0]);
+    };
+
+    const imageUrl = imageList.filter(image => isImageUrl(String(image.url)) ? image : null);
+
     return (
         <>
             <div style={{ position: 'relative' }}>
@@ -38,11 +45,11 @@ export default function ImageSwiper({ imageList }) {
                             position: 'fixed',
                             top: 0,
                             left: 0,
-                            backgroundColor: 'rgba(128, 128, 128, 0.8)',
+                            backgroundColor: 'grey',
                             height: "100vh",
                             width: '100vw',
-                            zIndex: 1000, // Ensure this is high enough to cover other content
-                            overflow: 'hidden', // Hide scrollbars if necessary
+                            zIndex: 1000,
+                            overflow: 'hidden',
                         }}>
                         <div
                             style={{
@@ -50,15 +57,19 @@ export default function ImageSwiper({ imageList }) {
                                 top: '50%',
                                 left: '50%',
                                 transform: 'translate(-50%, -50%)',
-                                zIndex: 1010, // Keep this above the overlay background
+                                zIndex: 1010,
                             }}>
-                            <IconButton onClick={closeOverlay} >
+                            <IconButton onClick={closeOverlay} sx={{
+                                float: 'right'
+                            }} >
                                 <CloseIcon />
                             </IconButton>
                             <Box component='img'
                                 sx={{
                                     width: "90vw",
                                     height: "90vh",
+                                    maxWidth: '400px',
+                                    maxHeight: '80vh'
                                 }}
                                 src={overlay}
                             />
@@ -66,29 +77,28 @@ export default function ImageSwiper({ imageList }) {
                     </div>}
 
                 <Swiper
-                    cssMode={true}
+                    spaceBetween={30}
+                    effect={'fade'}
                     navigation={true}
-                    pagination={false}
-                    mousewheel={true}
-                    keyboard={true}
-                    modules={[Navigation, Pagination, Mousewheel, Keyboard]}
+                    modules={[EffectFade, Navigation, Pagination]}
                     className="mySwiper"
                 >
-                    {imageList && imageList.map((element, index) => (
+                    {imageUrl.length > 0 && imageUrl.map((element, index) => (
                         <SwiperSlide key={element._id || index} className="custom-slide"
                         >
                             <Box component='img'
                                 sx={{
-                                    width: '200px',
-                                    height: '200px',
-                                    minWidth: '100px',
-                                    padding: '25px 40px',
+                                    width: '65%',
+                                    height: '19em',
+                                    // minWidth: '100px',
+                                    // padding: '15px',
                                     border: '1px solid black',
                                     borderRadius: '5px',
                                     margin: "20px auto",
+                                    backgroundColor: "grey",
                                 }}
                                 onClick={zoomOut}
-                                src={element}
+                                src={String(element.url) ? String(element.url) : './images/missing.png'}
                             />
 
                         </SwiperSlide>

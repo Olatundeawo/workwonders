@@ -9,7 +9,17 @@ import DropDown from './DropDown'
 export default function TopBar() {
 
     return (
-        <>
+        <Box sx={{
+            borderBottomLeftRadius: "60px",
+            borderBottomRightRadius: '-80px',
+            // border: '3px solid black',
+            // borderBottom: "3px solid black",
+            paddingTop: '30px',
+            paddingBottom: "30px",
+            // backgroundColor: '#9CBA9E'
+            // backgroundColor: '#8F9B9E'
+            backgroundColor: '#5B7A8B'
+        }}>
             <Typography variant='h1' sx={{
                 fontSize: "2em",
                 fontWeight: "500",
@@ -48,7 +58,7 @@ export default function TopBar() {
                     renderInput={(params) => (
                         <TextField
                             {...params}
-                            label="Search input"
+                            label="Search Machine"
                             InputProps={{
                                 ...params.InputProps,
                                 type: 'search',
@@ -59,7 +69,7 @@ export default function TopBar() {
                 <DropDown />
 
             </Box>
-        </>
+        </Box>
     )
 }
 

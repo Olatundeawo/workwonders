@@ -32,6 +32,11 @@ export default function DropDown() {
             role="presentation"
             onClick={toggle(anchor, false)}
             onKeyDown={toggle(anchor, false)}
+            sx={{
+                height: "100vh",
+                // bgcolor: "#3E5C6B",
+                bgcolor: "#8F9B9E"
+            }}
         >
             <List>
                 {routes.map((item, index) => (
@@ -60,8 +65,10 @@ export default function DropDown() {
 
     return (
         <>
-            <React.Fragment>
-                <Button onClick={toggle(anchor, true)}><MenuRoundedIcon fontSize="large" /></Button>
+            <React.Fragment >
+                <Button onClick={toggle(anchor, true)}
+                    sx={{ color: 'black' }} >
+                    <MenuRoundedIcon fontSize="large" /></Button>
                 <Drawer
                     anchor={anchor}
                     open={draw}

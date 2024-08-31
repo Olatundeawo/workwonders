@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, IconButton, ImageList, ImageListItem, ImageListItemBar } from "@mui/material";
+import { Box, IconButton, ImageList, ImageListItem, ImageListItemBar, Tooltip, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import InfoIcon from "@mui/icons-material/Info";
 import '../assets/css/Home.css';
@@ -61,7 +61,7 @@ export default function Home() {
 
     return (
         <div className="body" style={{
-            paddingTop: '30px'
+            paddingBottom: '10px'
 
         }}>
             <TopBar />
@@ -73,34 +73,57 @@ export default function Home() {
                         display: 'flex',
                         flexWrap: 'wrap',
                         margin: 'auto',
+                        paddingTop: "15px",
                         alignItems: "center",
-                        justifyContent: "center"
+                        justifyContent: "center",
+                        borderTopRightRadius: "30px",
+                        // borderTop: "3px solid red"
                     }}
                 >
-                    {machines.map((item) => (
+                    {machines.map((item, index) => (
                         <ImageListItem key={item._id}
+
                             sx={{
                                 display: "flex",
-                                width: "240%",
+                                width: "240px",
                                 height: '250px',
                                 flex: '1 1 200px',
-                                maxWidth: '300px',
-                                maxHeight: '310px',
-                                minWidth: '150px',
-                                minHeight: "160px",
+                                maxWidth: '270px',
+                                maxHeight: '280px',
+                                minWidth: '180px',
+                                minHeight: "200px",
                                 marginTop: '10px',
                                 marginBottom: '10px',
                                 marginLeft: '5px',
-                                marginRight: '5px'
-                            }}>
+                                marginRight: '5px',
+                                borderRadius: "15px",
+                                overflow: 'hidden'
+                                // display: "flex",
+                                // width: "240px", // Adjust width to fit container
+                                // height: 'auto', // Adjust height to fit content
+                                // flex: '1 1 auto', // Flexible sizing
+                                // marginTop: '10px',
+                                // marginBottom: '10px',
+                                // marginLeft: '5px',
+                                // marginRight: '5px',
+                                // borderRadius: "15px",
+                                // overflow: 'hidden',
+                                // position: 'relative',
 
-                            <img
-                                onClick={() => handleItemClick(item._id)}
-                                srcSet={`${Array.isArray(item.media) && item.media.length > 0 ? String(item.media[0].url) : './images/logo.jpg'}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                                src={`${Array.isArray(item.media) && item.media.length > 0 ? String(item.media[0].url) : './images/logo.jpg'}?w=164&h=164&fit=crop&auto=format`}
-                                alt={`company logo`}
-                                loading="lazy"
-                            />
+                            }}>
+                            <div className="image-container">
+                                <img
+                                    className="responsive-image"
+                                    onClick={() => handleItemClick(item._id)}
+
+                                    src={item.media.length > 0
+                                        ? String(item.media[5].url)
+                                        : './images/logo.jpg'}
+
+                                    alt={`machine image`}
+                                    loading="lazy"
+                                />
+                            </div>
                             <ImageListItemBar
                                 title={item.title}
                                 subtitle={item.description}
@@ -109,7 +132,9 @@ export default function Home() {
                                         sx={{ color: 'white' }}
                                         aria-label={`info about ${item.title}`}
                                     >
-                                        <InfoIcon />
+                                        <Tooltip title={`Power: ${item.powerSource}`}>
+                                            <InfoIcon />
+                                        </Tooltip>
                                     </IconButton>
                                 }
                             />
@@ -118,8 +143,10 @@ export default function Home() {
                 </ImageList>
             </Box>
             <footer className="footer">
-                © 2024 Easy Tech. All rights reserved.
+                <Typography variant='h6'>
+                    © 2024 Easy Tech. All rights reserved.
+                </Typography>
             </footer>
-        </div>
+        </div >
     );
 }

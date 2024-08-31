@@ -14,10 +14,10 @@ export default function About() {
     ];
     const lists = [{ first: "Drillers kuygyuofuky", second: "Drillers kuygyuofukyDrillers kuygyuofuky" }, { first: "Drillers kuygyuofuky", second: "Drillers kuygyuofukyDrillers kuygyuofuky" }, { first: "Drillers kuygyuofuky", second: "Drillers kuygyuofukyDrillers kuygyuofuky" }, { first: "Drillers kuygyuofuky", second: "Drillers kuygyuofukyDrillers kuygyuofuky" }]
 
+
     return (
         <div className="overAll" style={{
             width: '100vw',
-            maxWidth: '100vw',
             height: '100vh'
         }}>
             <div className="section1">
@@ -71,7 +71,9 @@ export default function About() {
                             sx={{
                                 width: "150px",
                                 maxWidth: "30%",
-                                bgcolor: "green",
+                                // bgcolor: "#1976D2",
+                                bgcolor: 'grey',
+                                // border: '1px solid black',
                                 display: "flex",
                                 flexWrap: "wrap",
                                 alignItems: "center",
@@ -81,7 +83,7 @@ export default function About() {
                                 margin: "10px",
                             }}
                         >
-                            <IconButton sx={{ bgcolor: "white" }}>
+                            <IconButton sx={{ bgcolor: "#1976D2" }}>
                                 <service.icon />
                             </IconButton>
                             <Typography
@@ -160,10 +162,6 @@ export default function About() {
                 </span>
             </div >
             <div className="section4"
-            // sx={{
-            //     margin: "auto",
-            //     paddingLeft: 300
-            // }}
             >
                 <Box sx={{
                     position: "relative",
@@ -173,27 +171,32 @@ export default function About() {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    bgcolor: "red",
+                    bgcolor: "#9CBA9E",
                     margin: "auto",
-
-                    "&::before": {
-                        content: '""',
-                        position: "absolute",
-                        width: "100%",
-                        height: "100%",
-                        borderRadius: "50%",
-                        // display: "flex",
-                        // alignItems: "center",
-                        // justifyContent: "center",
-                        bgcolor: "black",
-                        top: -15,
-                        left: -25,
-                        zIndex: -1,
-                    }
                 }}>
-                    <h1>10</h1><br /><h4>Years Of Experience</h4>
+                    <span className="dot"></span>
+                    <span className="anniversary">
+                        <h1 className="ten">10</h1><h4 className="text">Years <br></br>Of Experience</h4>
+                    </span>
+                    <span className="dot dot1"></span>
                 </Box>
+                <div className="points">
+                    <span className="number">
+                        56k+
+                    </span>
+                    <Typography variant='body1' sx={{
+                        marginBottom: '15px'
+                    }}>
+                        Machines Created
+                    </Typography>
+                    <span className="number">
+                        56k+
+                    </span>
+                    <Typography variant='body1'>
+                        Sertisfied Customers
+                    </Typography>
+                </div>
             </div>
-        </div >
+        </div>
     );
 }

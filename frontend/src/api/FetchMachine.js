@@ -5,7 +5,7 @@ export default async function fetchMachine() {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const data = await response.json();
-        // console.log(data[11].media.length);
+        console.log(String(data[1].media[0].url));
         return data;
     } catch (err) {
         console.error("Error fetching machine data:", err);

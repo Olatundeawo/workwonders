@@ -43,15 +43,34 @@ export default function Contact() {
                 justifyContent: "end",
                 alignItems: "center"
             }}>
-                <Typography variant="h5"
-                    sx={{
-                        marginRight: '30%'
-                    }}>
-                    Get In Touch
-                </Typography>
                 <DropDown sx={{
                     marginLeft: '30%'
                 }} />
+            </Box>
+
+            <Typography variant="h5" >
+                Contact Us
+            </Typography>
+            <Typography variant="body1" sx={{
+                width: '80%',
+                margin: 'auto'
+            }}>
+                Feel free to contact us anytime, we will get back to you as soon as we can
+            </Typography>
+            <Box sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: '20px'
+            }}>
+                {/* <LocationOnIcon /><h4>whatsapp</h4> */}
+                {handles.map((item, index) => (
+                    <a key={index} href={item.link} target="_blank" rel="noopener noreferrer">
+                        <IconButton>
+                            <item.icon />
+                        </IconButton>
+                    </a>
+                ))}
             </Box>
             <form className="form" onSubmit={sendMail}>
                 <FormControl style={spacing}>
@@ -61,7 +80,6 @@ export default function Contact() {
                         name='name'
                         type='text'
                         sx={{ height: '30px', fontSize: '16px' }}
-
                         required />
                 </FormControl>
                 <FormControl style={spacing}>
@@ -90,34 +108,12 @@ export default function Contact() {
                     sx={{ width: '30%', marginTop: '20px' }}>Send</Button>
             </form>
             <footer className="footer" style={{
-                marginTop: "50px",
-                width: "100%",
-                backgroundColor: "red",
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: "center",
                 paddingTop: "20px",
                 paddingBottom: '20px'
             }}>
-                <Typography variant="h5" style={spacing}>
-                    Contact Us
+                <Typography variant="h6">
+                    © 2024 Easy Tech. All rights reserved.
                 </Typography>
-                <Box sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginBottom: '20px'
-                }}>
-                    {/* <LocationOnIcon /><h4>whatsapp</h4> */}
-                    {handles.map((item, index) => (
-                        <a key={index} href={item.link} target="_blank" rel="noopener noreferrer">
-                            <IconButton>
-                                <item.icon />
-                            </IconButton>
-                        </a>
-                    ))}
-                </Box>
-                © 2024 Easy Tech. All rights reserved.
             </footer>
         </div>
     )

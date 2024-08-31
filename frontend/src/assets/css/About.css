@@ -6,13 +6,11 @@
 }
 
 .section1 {
-    width: 100%;
-    background-color: red;
-    padding: 10px;
+    padding: 15px;
 }
 
 .section2 {
-    background-color: yellow;
+    background-color: #8F9B9E;
     margin: auto;
     margin-top: -25px;
     text-align: center;
@@ -37,7 +35,7 @@
     margin: 0;
     margin-top: -33px;
     padding-top: 30px;
-    background-color: green;
+    background-color: #3E5C6B;
 }
 
 .h5 {
@@ -48,11 +46,54 @@
 
 .section4 {
     padding: 40px;
-    /* display: "flex";
-    align-items: "center";
-    justify-content: "center"; */
+    background-color: #333333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ten,
+.text {
+    text-align: center;
+    padding: 0;
+    margin: 0;
 }
 
 .ten {
-    font-size: 30px;
+    font-size: 50px;
+    font-weight: bold;
+}
+
+.anniversary {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.dot {
+    width: 40px;
+    height: 40px;
+    background-color: black;
+    border-radius: 50%;
+    position: absolute;
+    top: -10%;
+    right: -30%;
+}
+
+.dot1 {
+    width: 25px;
+    height: 25px;
+    top: 25%;
+    right: -35%;
+}
+
+.points {
+    margin-left: 15%;
+}
+
+.number {
+    font-weight: bold;
+    font-size: 1.3em;
+    color: goldenrod;
 }

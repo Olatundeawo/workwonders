@@ -142,19 +142,23 @@ export default function CreateMachine() {
                         name="media"
                         type="file"
                         style={{ display: 'none' }}
-                        multiple
+                        inputProps={{
+                            multiple: true
+                        }}
                         accept='video/*'
                         // required
                         onChange={handleVideoUpload}
                     />
                 </Button>
-                <div>
+                <div
+                    className="image-container">
                     {videoURLs.map((url, index) => (
                         <Box key={index} component='video'
                             sx={{
                                 width: '300px',
                                 height: '200px',
                                 borderRadius: '10px',
+                                margin: 'auto',
                                 margin: '10px',
                             }}
                             alt={`uploaded video ${index}`}
