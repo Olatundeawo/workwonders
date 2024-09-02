@@ -137,35 +137,59 @@ exports.project_delete_get = asyncHandler(async (req, res, next) => {
 exports.project_delete_post = asyncHandler(async (req, res, next) => {
     const projectId = req.params.id;
 
-    const project = await Project.findById(projectId).populate('media');
+    // Find the project and populate associated media
+    const project = await Project.findById(projectId);
 
     if (!project) {
         return res.status(404).json({ error: 'Project not found' });
     }
 
     try {
-        // Delete media from Firebase Storage and MongoDB
-        for (const media of project.media) {
-            if (typeof media.url === 'string') {
-                const filePath = decodeURIComponent(media.url.split('/o/')[1].split('?')[0]);
+        // Iterate over each media ID associated with the project
+        for (const mediaId of project.media) {
+            // Fetch the media document using the media ID
+            const media = await Media.findById(mediaId);
+            if (!media) {
+                console.error(`Media not found for ID: ${mediaId}`);
+                continue;
+            }
+
+            // Handle the media.url field (which might be an array or a single object)
+            if (Array.isArray(media.url)) {
+                for (const urlObj of media.url) {
+                    if (urlObj && typeof urlObj.url === 'string') {
+                        const filePath = decodeURIComponent(urlObj.url.split('/o/')[1].split('?')[0]);
+                        const file = bucket.file(filePath);
+
+                        await file.delete().catch(err => {
+                            console.error(`Failed to delete file: ${urlObj.url}`, err);
+                            throw new Error('Failed to delete file from Firebase Storage');
+                        });
+                    } else {
+                        console.error(`Invalid URL object in media array: ${JSON.stringify(urlObj)}`);
+                    }
+                }
+            } else if (media.url && typeof media.url === 'object' && typeof media.url.url === 'string') {
+                const filePath = decodeURIComponent(media.url.url.split('/o/')[1].split('?')[0]);
                 const file = bucket.file(filePath);
 
                 await file.delete().catch(err => {
-                    console.error(`Failed to delete file: ${media.url}`, err);
+                    console.error(`Failed to delete file: ${media.url.url}`, err);
                     throw new Error('Failed to delete file from Firebase Storage');
                 });
-
-                await Media.findByIdAndDelete(media._id);
             } else {
-                console.error(`Invalid media URL: ${media.url}`);
+                console.error(`Invalid media URL format: ${JSON.stringify(media.url)}`);
             }
+
+            // After processing all URLs, delete the media document itself
+            await Media.findByIdAndDelete(media._id);
         }
 
-        // Delete the project itself
+        // Finally, delete the project itself
         await Project.findByIdAndDelete(projectId);
-        res.json({ message: 'Project successfully deleted', project });
+        res.json({ message: 'Project and associated media successfully deleted', project });
     } catch (err) {
-        next(err);  // Let asyncHandler handle any errors
+        next(err);  // Handle errors with asyncHandler
     }
 });
 
