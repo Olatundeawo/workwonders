@@ -138,78 +138,38 @@ exports.project_delete_post = asyncHandler(async (req, res, next) => {
     const projectId = req.params.id;
 
     // Find the project and populate associated media
-    const project = await Project.findById(projectId);
+    const project = await Project.findById(projectId).populate('media');
 
     if (!project) {
         return res.status(404).json({ error: 'Project not found' });
     }
 
     try {
-        // Iterate over each media ID associated with the project
-        for (const mediaId of project.media) {
-            // Fetch the media document using the media ID
-            const media = await Media.findById(mediaId);
-            if (!media) {
-                console.error(`Media not found for ID: ${mediaId}`);
-                continue;
-            }
-
-            // Handle the media.url field (which might be an array or a single object)
-            if (Array.isArray(media.url)) {
-                for (const urlObj of media.url) {
-                    if (urlObj && typeof urlObj.url === 'string') {
-                        try {
-                            // Extract the file path from the URL
-                            const filePath = extractFilePathFromUrl(urlObj.url);
-                            if (filePath) {
-                                const file = bucket.file(filePath);
-                                await file.delete();
-                                console.log(`Successfully deleted file: ${urlObj.url}`);
-                            } else {
-                                console.error(`Failed to extract file path from URL: ${urlObj.url}`);
-                            }
-                        } catch (err) {
-                            console.error(`Failed to delete file from Firebase Storage: ${urlObj.url}`, err);
-                        }
-                    } else {
-                        console.error(`Invalid URL object in media array: ${JSON.stringify(urlObj)}`);
-                    }
-                }
-            } else if (media.url && typeof media.url === 'object' && typeof media.url.url === 'string') {
-                try {
-                    const filePath = extractFilePathFromUrl(media.url.url);
-                    if (filePath) {
-                        const file = bucket.file(filePath);
-                        await file.delete();
-                        console.log(`Successfully deleted file: ${media.url.url}`);
-                    } else {
-                        console.error(`Failed to extract file path from URL: ${media.url.url}`);
-                    }
-                } catch (err) {
-                    console.error(`Failed to delete file from Firebase Storage: ${media.url.url}`, err);
-                }
-            } else {
-                console.error(`Unexpected media URL format: ${JSON.stringify(media.url)}`);
-            }
-
-            // After processing all URLs, delete the media document itself
+        // Iterate over each media associated with the project
+        for (const media of project.media) {
             try {
+                // Extract the file path from the Firebase URL
+                const filePath = extractFilePathFromUrl(media.url);
+                if (filePath) {
+                    const file = bucket.file(filePath);
+                    await file.delete();
+                    console.log(`Successfully deleted file from Firebase Storage: ${media.url}`);
+                } else {
+                    console.error(`Failed to extract file path from URL: ${media.url}`);
+                }
+
+                // Delete the media document from MongoDB
                 await Media.findByIdAndDelete(media._id);
                 console.log(`Successfully deleted media document with ID: ${media._id}`);
             } catch (err) {
-                console.error(`Failed to delete media document with ID: ${media._id}`, err);
+                console.error(`Failed to delete media with ID: ${media._id}`, err);
             }
         }
 
-        // Finally, delete the project itself
-        try {
-            await Project.findByIdAndDelete(projectId);
-            console.log(`Successfully deleted project with ID: ${projectId}`);
-            res.json({ message: 'Project and associated media successfully deleted', project });
-        } catch (err) {
-            console.error(`Failed to delete project with ID: ${projectId}`, err);
-            next(err);
-        }
+        // Delete the project itself
+        await Project.findByIdAndDelete(projectId);
+        console.log(`Successfully deleted project with ID: ${projectId}`);
+        res.json({ message: 'Project and associated media successfully deleted', project });
     } catch (err) {
         console.error('Error during project deletion process', err);
         next(err);
@@ -227,7 +187,6 @@ function extractFilePathFromUrl(url) {
         return null;
     }
 }
-
 
 // Display project update on GET
 exports.project_update_get = asyncHandler(async (req, res, next) => {
