@@ -5,7 +5,7 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import FormControl from '@mui/material/FormControl';
 import RadioGroup from '@mui/material/RadioGroup';
 import '../assets/css/CreateMachine.css';
-import createProject from '../api/CreateMachine'
+import createProject from '../api/CreateMachine';
 
 export default function CreateMachine() {
     const [message, setMessage] = useState('');

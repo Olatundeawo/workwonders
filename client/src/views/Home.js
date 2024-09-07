@@ -6,11 +6,13 @@ import '../assets/css/Home.css';
 import Data from '../db/data.json';
 import TopBar from "../components/TopBar";
 import fetchMachine from "../api/FetchMachine";
+import ImageUrlFilter from "../utils/ImageUrlFilter";
 
 export default function Home() {
     const [machines, setMachines] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    // const [imageUrls, getUrl] = useState([])
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -18,8 +20,8 @@ export default function Home() {
             try {
                 const data = await fetchMachine();
                 if (Array.isArray(data)) {
+                    // console.log('machine nwigiri: ', Array(data[0].media[4].url))
                     setMachines(data);
-                    // console.log(String(data[11]['media'][0].url))
                 } else {
                     console.error('Data fetched is not an array:', data);
                     setMachines([]);
@@ -58,6 +60,14 @@ export default function Home() {
         }
     };
 
+    function imageUrlGen(imagelists, id) {
+        const list = ImageUrlFilter(imagelists);
+        // console.log('hello from here', String(list[0].url));
+        // const newList = list.filter(item => item._id === id);
+        // console.log('hello from here', newList);
+        return String(list[0].url);
+    }
+
 
     return (
         <div className="body" style={{
@@ -80,9 +90,8 @@ export default function Home() {
                         // borderTop: "3px solid red"
                     }}
                 >
-                    {machines.map((item, index) => (
-                        <ImageListItem key={item._id}
-
+                    {machines.length > 0 && machines.map((item, index) => (
+                        <ImageListItem key={item._id || index}
                             sx={{
                                 display: "flex",
                                 width: "240px",
@@ -98,26 +107,14 @@ export default function Home() {
                                 marginRight: '5px',
                                 borderRadius: "15px",
                                 overflow: 'hidden'
-                                // display: "flex",
-                                // width: "240px", // Adjust width to fit container
-                                // height: 'auto', // Adjust height to fit content
-                                // flex: '1 1 auto', // Flexible sizing
-                                // marginTop: '10px',
-                                // marginBottom: '10px',
-                                // marginLeft: '5px',
-                                // marginRight: '5px',
-                                // borderRadius: "15px",
-                                // overflow: 'hidden',
-                                // position: 'relative',
-
                             }}>
                             <div className="image-container">
                                 <img
                                     className="responsive-image"
                                     onClick={() => handleItemClick(item._id)}
-
-                                    src={item.media.length > 0
-                                        ? String(item.media[5].url)
+                                    // src={imageUrlGen(item.media) || './images/missing.png'}
+                                    src={item.media.length > 0 && imageUrlGen(item.media)
+                                        ? imageUrlGen(item.media)
                                         : './images/missing.png'}
 
                                     alt={`machine image`}

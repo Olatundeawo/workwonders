@@ -4,11 +4,14 @@ import HomeIcon from '@mui/icons-material/Home';
 import InfoIcon from '@mui/icons-material/Info';
 import ConnectWithoutContactIcon from '@mui/icons-material/ConnectWithoutContact';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
 import PersonIcon from '@mui/icons-material/Person';
-import Form from "./Form"
-import "../assets/css/DropDown.css"
+import PrecisionManufacturingIcon from '@mui/icons-material/PrecisionManufacturing';
+import ContactSupportIcon from '@mui/icons-material/ContactSupport';
+import Form from "./Form";
+import "../assets/css/DropDown.css";
+import IsAdmin from "../utils/IsAdmin";
 
 export default function DropDown() {
     const [visible, isVisible] = React.useState(false);
@@ -18,7 +21,13 @@ export default function DropDown() {
 
     const [draw, setOpen] = React.useState(false);
     const anchor = 'right';
-    const routes = [{ name: 'Home', route: '/', icon: HomeIcon }, { name: "About", route: "/about", icon: InfoIcon }, { name: 'Contact', route: "/contact", icon: ConnectWithoutContactIcon }, { name: 'Admin', route: "/admin", icon: PersonIcon }];
+    const routes = [{ name: "Home", route: "/", icon: HomeIcon }, { name: 'Machines', route: '/machines', icon: PrecisionManufacturingIcon }, { name: 'Contact', route: "/contact", icon: ContactSupportIcon }];
+    const admin = IsAdmin()
+
+    if (admin) {
+        const adminOption = { name: 'Admin', route: "/admin", icon: PersonIcon }
+        routes.push(adminOption)
+    }
 
     const toggle = (anchor, open) => (e) => {
         if (e.type === 'keydown' && (e.key === 'Tab' || e.key === 'Shift')) {
@@ -51,14 +60,15 @@ export default function DropDown() {
                         </Link>
                     </ListItem>
                 ))}
-                <ListItem>
-                    <ListItemButton onClick={toggleForm}>
-                        <ListItemIcon>
-                            < LoginRoundedIcon />
-                        </ListItemIcon>
-                        Login
-                    </ListItemButton>
-                </ListItem>
+                {admin &&
+                    <ListItem>
+                        <ListItemButton onClick={toggleForm}>
+                            <ListItemIcon>
+                                < LoginRoundedIcon />
+                            </ListItemIcon>
+                            Login
+                        </ListItemButton>
+                    </ListItem>}
             </List>
         </Box>
     );
@@ -77,8 +87,8 @@ export default function DropDown() {
                     {list(anchor)}
                 </Drawer>
             </React.Fragment>
-            <div className='form-container' >
-                {visible && <Form type="signup" toggleForm={toggleForm} />}
+            <div className='form-container'>
+                {admin && visible && <Form type="signup" toggleForm={toggleForm} />}
             </div>
         </>
     );

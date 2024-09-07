@@ -1,4 +1,5 @@
 var createError = require('http-errors');
+const serverless = require('serverless-http');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
@@ -6,18 +7,19 @@ var logger = require('morgan');
 
 // Set up mongoose connection
 require('dotenv').config()
+
+
 const mongoose = require('mongoose');
 mongoose.set('strictQuery', false);
 
 main().catch((err) => console.log(err));
 async function main() {
-  await mongoose.connect(``, {
+  await mongoose.connect(process.env.MONGODB_URL, {
     serverSelectionTimeoutMS: 50000,
     useNewUrlParser: true,
     useUnifiedTopology: true
-  })
+  }).then(() => console.log('MongoDB connected successfully'))
 
-    .then(() => console.log('MongoDB connected successfully'))
     .catch(err => console.error('MongoDB connection error:', err));
 }
 
@@ -60,3 +62,4 @@ app.use(function (err, req, res, next) {
 });
 
 module.exports = app;
+module.exports.handler = serverless(app);

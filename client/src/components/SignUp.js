@@ -18,6 +18,7 @@ export default function SignUpForm() {
             const response = await SignUpPost(e);
             if (response === 'user created successfully') {
                 console.log('State:', response)
+                localStorage.setItem('EasyTechAdmin', true)
                 setState('successful')
                 setMessage('Successful!');
             } else {

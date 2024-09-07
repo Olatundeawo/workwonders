@@ -12,13 +12,13 @@ import PasswordVerification from "./views/Test";
 const router = createBrowserRouter([
   {
     path: '/',
-    element: < Home />
+    element: < About />
   }, {
     path: "contact",
     element: < Contact />
   }, {
-    path: "about",
-    element: < About />
+    path: "machines",
+    element: < Home />
   },
   {
     path: "admin",
