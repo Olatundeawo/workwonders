@@ -13,7 +13,7 @@ const upload = multer({ storage: storage });
 router.get("/project/create", project_controller.project_create_get);
 
 // Post request for creating project
-router.post("/project/create", upload.array('media'),  project_controller.project_create_post);
+router.post("/project/create", upload.array('media'), project_controller.project_create_post);
 
 // Get request to delete project
 router.get("/project/:id/delete", project_controller.project_delete_get);
@@ -37,20 +37,21 @@ router.get("/projects", project_controller.project_list);
 /// USER ROUTE ///
 
 // IPs allowed to access the sign up and login page 
-const allowedIPs = ["192.168.43.5"];
+// const allowedIPs = ["192.168.43.5"];
 
 //  Function that allowed certain IPs
 const ipFilter = (req, res, next) => {
-    const clientIP = req.ip || req.connection.remoteAddress;
+    // const clientIP = req.ip || req.connection.remoteAddress;
 
-    if (allowedIPs.includes(clientIP)) {
-        next();
-    } else {
-        res.status(403).json({
-            success: false,
-            message: "Access denied"
-        })
-    }
+    // if (allowedIPs.includes(clientIP)) {
+    //     next();
+    // } else {
+    //     res.status(403).json({
+    //         success: false,
+    //         message: "Access denied"
+    //     })
+    // }
+    next()
 }
 // Get request for creating user
 router.get("/user/create", ipFilter, user_controller.user_create_get);
@@ -59,7 +60,7 @@ router.get("/user/create", ipFilter, user_controller.user_create_get);
 router.post("/user/create", ipFilter, user_controller.user_create_post);
 
 // Get request to delete user
-router.get("/user/:id/delete",ipFilter, user_controller.user_delete_get);
+router.get("/user/:id/delete", ipFilter, user_controller.user_delete_get);
 
 // Post request to delete user
 router.post("/user/:id/delete", ipFilter, user_controller.user_delete_post);
@@ -75,5 +76,6 @@ router.get("/user/:id", ipFilter, user_controller.user_detail);
 
 // Get request for all users
 router.get("/users", ipFilter, user_controller.user_list);
+
 
 module.exports = router;

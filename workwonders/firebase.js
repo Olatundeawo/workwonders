@@ -8,5 +8,6 @@ admin.initializeApp({
 });
 
 const bucket = admin.storage().bucket()
+// console.log('Bucket Instance', bucket)
 
-module.exports = { bucket };
+module.exports = bucket;

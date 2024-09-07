@@ -4,18 +4,18 @@ const Schema = mongoose.Schema;
 
 const projectSchema = new Schema({
     title: {
-        type: String, required:[true, "project title is required"],
+        type: String, required: [true, "project title is required"],
     },
     description: {
-        type: String, 
+        type: String,
         required: [true, "Give a description of the project"],
     },
     powerSource: {
-        type: String, 
+        type: String,
         required: [true, "Power source is required"]
     },
-    category: {type: String, required: true},
-    media: [{type: Schema.Types.ObjectId, ref: 'Media'}]
+    category: { type: String, required: true },
+    media: [{ type: Schema.Types.ObjectId, ref: 'Video' }]
 });
 
 module.exports = mongoose.model('Project', projectSchema);
