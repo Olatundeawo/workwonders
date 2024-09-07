@@ -1,25 +1,29 @@
 {
+    "version": 2,
     "builds": [
-        {
-            "src": "client/package.json",
-            "use": "@vercel/static-build",
-            "config": {
-                "distDir": "client/build"
-            }
-        },
         {
             "src": "workwonders/app.js",
             "use": "@vercel/node"
+        },
+        {
+            "src": "package.json",
+            "use": "@vercel/static-build",
+            "config": {
+                "distDir": "build"
+            }
         }
     ],
     "routes": [
         {
-            "src": "/api/(.*)",
+            "src": "/catalog/(.*)",
             "dest": "/workwonders/app.js"
         },
         {
+            "handle": "filesystem"
+        },
+        {
             "src": "/(.*)",
-            "dest": "/client/$1"
+            "dest": "client/build/index.html"
         }
     ]
 }
