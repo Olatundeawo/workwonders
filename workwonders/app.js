@@ -1,17 +1,27 @@
 var createError = require('http-errors');
+const serverless = require('serverless-http');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const cors = require('cors')
 
 // Set up mongoose connection
 require('dotenv').config()
+
+
 const mongoose = require('mongoose');
 mongoose.set('strictQuery', false);
 
 main().catch((err) => console.log(err));
 async function main() {
-  await mongoose.connect(`${process.env.MONGODB_URL}`);
+  await mongoose.connect(process.env.MONGODB_URL, {
+    serverSelectionTimeoutMS: 50000,
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  }).then(() => console.log('MongoDB connected successfully'))
+
+    .catch(err => console.error('MongoDB connection error:', err));
 }
 
 var indexRouter = require('./routes/index');
@@ -19,6 +29,13 @@ var usersRouter = require('./routes/users');
 const catalogRouter = require('./routes/catalog');
 
 var app = express();
+
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  methods: 'GET,POST'
+};
+
+app.use(cors(corsOptions));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -35,7 +52,7 @@ app.use('/users', usersRouter);
 app.use('/catalog', catalogRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
@@ -53,3 +70,4 @@ app.use(function (err, req, res, next) {
 });
 
 module.exports = app;
+// module.exports.handler = serverless(app);

@@ -1,0 +1,11 @@
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.drop {
+    text-align: end;
+}

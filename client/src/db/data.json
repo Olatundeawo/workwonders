@@ -1,0 +1,191 @@
+[
+    {
+        "id": "45",
+        "description": "a good way to die hard",
+        "title": "driller",
+        "category": "crusher",
+        "powerSource": "./images/logo.jpg",
+        "images": {
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": ""
+        },
+        "videos": {
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": ""
+        }
+    },
+    {
+        "id": "46",
+        "description": "a good way to die hard",
+        "name": "remover",
+        "type": "crusher",
+        "default": "./images/logo.jpg",
+        "images": {
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": ""
+        },
+        "videos": {
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": ""
+        }
+    },
+    {
+        "id": "47",
+        "description": "a good way to die hard",
+        "name": "bonner",
+        "type": "crusher",
+        "default": "./images/logo.jpg",
+        "images": {
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": ""
+        },
+        "videos": {
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": ""
+        }
+    },
+    {
+        "id": "48",
+        "description": "a good way to die hard",
+        "name": "spiller",
+        "type": "spiller",
+        "default": "./images/logo.jpg",
+        "images": {
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": ""
+        },
+        "videos": {
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": ""
+        }
+    },
+    {
+        "id": "49",
+        "description": "a good way to die hard",
+        "name": "cutter",
+        "type": "spiller",
+        "default": "./images/logo.jpg",
+        "images": {
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": ""
+        },
+        "videos": {
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": ""
+        }
+    },
+    {
+        "id": "50",
+        "description": "a good way to die hard",
+        "name": "miller",
+        "type": "spiller",
+        "default": "./images/logo.jpg",
+        "images": {
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": ""
+        },
+        "videos": {
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": ""
+        }
+    },
+    {
+        "id": "70",
+        "description": "a good way to die hard",
+        "name": "crusher",
+        "type": "driller",
+        "default": "./images/logo.jpg",
+        "images": {
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": ""
+        },
+        "videos": {
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": ""
+        }
+    },
+    {
+        "id": "71",
+        "description": "a good way to die hard",
+        "name": "filler",
+        "type": "driller",
+        "default": "./images/logo.jpg",
+        "images": {
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": ""
+        },
+        "videos": {
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": ""
+        }
+    },
+    {
+        "id": "90",
+        "description": "a good way to die hard",
+        "name": "filler",
+        "type": "driller",
+        "default": "./images/logo.jpg",
+        "images": {
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": ""
+        },
+        "videos": {
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": ""
+        }
+    }
+]
