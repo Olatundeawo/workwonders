@@ -1,0 +1,17 @@
+{
+  "max_workers": 8,
+  "request_delay": 1.5,
+  "timeout": 30,
+  "max_retries": 3,
+  "user_agent": "NewsBot/1.0 (+https://example.com/bot)",
+  "max_articles_per_site": 100,
+  "content_min_length": 200,
+  "search_methods": ["rss", "sitemap", "crawl"],
+  "output_formats": ["json", "csv"],
+  "case_sensitive": false,
+  "log_level": "DEBUG",
+  "log_urls": true,
+  "log_url_details": true,
+  "use_online_company_aliases": true,
+  "alphavantage_api_key": "704SR0N089XTXMVJ"
+}
